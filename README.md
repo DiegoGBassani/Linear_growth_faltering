@@ -2,13 +2,20 @@ R code used to generate figures included in:
 
 <b>Whole-population perspective is needed for analyses and actions to address linear growth faltering in low- and middle-income countries</b>
 
-Authors: Daniel E. Roth, Kelly M. Watson & Diego G. Bassani
+<b>Authors:</b> Daniel E. Roth, Kelly M. Watson & Diego G. Bassani
 
-PROJECT: Matters Arising response to Benjamin-Chung et al. 2023
-PROGRAM: DR_KW_DB_MattersArising_SimCode_20240208
-TASK: Simulate population datasets and generate stunting indicators
-CREATED BY: Kelly Watson, The Hospital for Sick Children
-DATE: Feb 08, 2023
+<b>PROJECT:</b> Matters Arising response to Benjamin-Chung et al. 2023
+
+<b>PROGRAM:</b> DR_KW_DB_MattersArising_SimCode_20240208
+
+<b>TASK:</b> Simulate population datasets and generate stunting indicators
+
+<b>CREATED BY:</b> Kelly Watson, The Hospital for Sick Children
+
+<b>DATE:</b> Feb 08, 2023
+
+
+
 
 
 <b>Table of contents:  </b>
