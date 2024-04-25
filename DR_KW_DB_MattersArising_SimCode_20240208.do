@@ -3,7 +3,7 @@
 // PROGRAM: DR_KW_DB_MattersArising_SimCode_20240208
 // TASK: Simulate population datasets and generate stunting indicators
 // CREATED BY: Kelly Watson, The Hospital for Sick Children
-// DATE: Feb 08, 2023
+// DATE: Feb 08, 2024
 
 
 /* Table of contents: 
