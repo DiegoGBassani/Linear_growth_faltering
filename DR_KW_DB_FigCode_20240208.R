@@ -1,10 +1,12 @@
 
 ########################################################################
-## PROJECT: Matters Arising response to HBGDki consortium 2023 paper #1
-## PROGRAM: DR_KW_DB_MattersArising_FigCode_20240208
+## PROJECT: Response to HBGDki consortium 2023 paper #1
+## PROGRAM: DR_KW_DB_FigCode_20240208
 ## TASK: Generate main figures
 ## CREATED BY: Kelly Watson, The Hospital for Sick Children
 ## DATE: Feb 08, 2024
+## Updated: Jun 25th 2024
+## Update note: Changing file name.
 
 ####################################################################
 ## Load necessary packages
@@ -23,7 +25,7 @@ require(gridExtra)
 ### Figure 1 Code
 
 # Load data for Fig2a
-Fig1 <- read_excel("DR_KW_DB_MattersArising_Fig1_Rdata_20240208.xlsx")
+Fig1 <- read_excel("DR_KW_DB_Fig1_Rdata_20240208.xlsx")
 
 # Set variables as factors
 Fig1$Metric_factor <- as.factor(Fig1$Metric)
@@ -68,7 +70,7 @@ Fig1Plot <- ggplot() +
         legend.position = c(0.8,0.8))
 
 
-ggsave("DR_KW_DB_MattersArising_Fig1_20240208.jpg", plot = Fig1Plot, units = "in", dpi = 300, width = 5, height = 5)
+ggsave("DR_KW_DB_Fig1_20240208.jpg", plot = Fig1Plot, units = "in", dpi = 300, width = 5, height = 5)
 
 ####################################################################
 
@@ -108,7 +110,7 @@ Figure2a <- ggplot(Fig2a) +
   scale_fill_manual(name = "", labels = c("Incident stunting onset", "Stunting reversal"), values = c("#332288", "#88CCEE"))
 
 # Load data for Fig2b
-Fig2b <- read_excel("DR_KW_DB_MattersArising_Fig2b_Rdata_20240208.xlsx")
+Fig2b <- read_excel("DR_KW_DB_Fig2b_Rdata_20240208.xlsx")
 Fig2b$corr_factor <- as.factor(Fig2b$correlation)
 Fig2b$laz0_factor <- as.factor(Fig2b$LAZ0)
 
@@ -143,7 +145,7 @@ Figure2b <- ggplot(Fig2b) +
 combined_plot <- ggarrange(Figure2a, Figure2b, nrow=2, labels = c("a", "b"), common.legend = TRUE, legend="right")
 
 # Save the combined plot as a jpeg
-ggsave("DR_KW_DB_MattersArising_Fig2_20240208.jpg", plot = combined_plot, units = "in", dpi = 300, width = 10, height = 5)
+ggsave("DR_KW_DB_Fig2_20240208.jpg", plot = combined_plot, units = "in", dpi = 300, width = 10, height = 5)
 
 ####################################################################
 ### Figure 3 Code
@@ -207,7 +209,7 @@ SA_GD_age <- ggplot(data=SA_monthly, aes(x=age_mos, y=GD_mos))+
 
 Fig3 <- ggarrange(SA_LAZ_age, SA_stunt_age, SA_GD_age, labels = c("a", "b","c"),ncol=3)
 
-ggsave("DR_KW_DB_MattersArising_Fig3_20240208.jpg", plot = Fig3, units = "in", dpi = 300, width = 10, height = 2.5)
+ggsave("DR_KW_DB_Fig3_20240208.jpg", plot = Fig3, units = "in", dpi = 300, width = 10, height = 2.5)
 
 ####################################################################
 ### Figure 4 Code
@@ -271,4 +273,4 @@ fig4_GD_age <- ggplot(data=fig4, aes(x=age_mos, y=GD_mos))+
 
 Fig4 <- ggarrange(fig4_LAZ_age, fig4_stunt_age, fig4_GD_age, labels = c("a", "b","c"),ncol=3)
 
-ggsave("DR_KW_DB_MattersArising_Fig4_20240208.jpg", plot = Fig4, units = "in", dpi = 300, width = 10, height = 2.5)
+ggsave("DR_KW_DB_Fig4_20240208.jpg", plot = Fig4, units = "in", dpi = 300, width = 10, height = 2.5)
