@@ -1,9 +1,11 @@
 
-// PROJECT: Matters Arising response to Benjamin-Chung et al. 2023
-// PROGRAM: DR_KW_DB_MattersArising_SimCode_20240208
+// PROJECT: Response to Benjamin-Chung et al. 2023
+// PROGRAM: DR_KW_DB_SimCode_20240208
 // TASK: Simulate population datasets and generate stunting indicators
 // CREATED BY: Kelly Watson, The Hospital for Sick Children
 // DATE: Feb 08, 2024
+## Updated: Jun 25th 2024
+## Update note: Changing file name.
 
 
 /* Table of contents: 
