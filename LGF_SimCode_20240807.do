@@ -1,20 +1,16 @@
-
-// PROJECT: Response to Benjamin-Chung et al. 2023
-// PROGRAM: DR_KW_DB_SimCode_20240208
+// PROJECT: Response to HBGDki consortium 2023 paper #1
+// PROGRAM: LGF_SimCode_20240807
 // TASK: Simulate population datasets and generate stunting indicators
 // CREATED BY: Kelly Watson, The Hospital for Sick Children
-// DATE: Feb 08, 2024
-## Updated: Jun 25th 2024
-## Update note: Changing file name.
-
+// DATE: Aug 7, 2024
 
 /* Table of contents: 
 PART 1: Simulate datasets (w/ varying corr) and generate stunting incidence for Figure 1
 PART 2: Simulate datasets (w/ varying corr) and generate stunting reversal for Figure 1
 PART 3: Simulate datasets w/ varying starting LAZ and LAZ shifts and generate stunting indicators for Figure 2a
 PART 4: Simulate datasets w/ varying starting LAZ and corr and generate stunting indicators for Figure 2b
-PART 5: Generate LAZ-, stunting-, and growth delay-by-age trajectories for Figures 3 and 4
-PART 6: Generate simulated dataset w/ missingness and calculate indicators - Extended Data Table 2
+PART 5: Generate LAZ-, stunting-, and growth delay-by-age trajectories for Figure 4
+PART 6: Generate simulated dataset w/ missingness and calculate incidence - Table 1
 */
 
 
@@ -27,16 +23,16 @@ PART 6: Generate simulated dataset w/ missingness and calculate indicators - Ext
 clear all
 set seed 81625
 set obs 10000
-* Corr matrix- empirical
-matrix I =  (1.00, 0.79, 0.77, 0.76, 0.75, 0.74, 0.73, 0.71, 0.70)
-matrix I =   I\ (0.79, 1.00, 0.82, 0.81, 0.80, 0.79, 0.77, 0.76, 0.75)
-matrix I =   I\ (0.77, 0.82, 1.00, 0.86, 0.85, 0.83, 0.82, 0.81, 0.80)
-matrix I =   I\ (0.76, 0.81, 0.86, 1.00, 0.89, 0.88, 0.87, 0.86, 0.85)
-matrix I =   I\ (0.75, 0.80, 0.85, 0.89, 1.00, 0.93, 0.92, 0.91, 0.89)
-matrix I =   I\ (0.74, 0.79, 0.83, 0.88, 0.93, 1.00, 0.97, 0.95, 0.94)
-matrix I =   I\ (0.73, 0.77, 0.82, 0.87, 0.92, 0.97, 1.00, 0.99, 0.99)
-matrix I =   I\ (0.71, 0.76, 0.81, 0.86, 0.91, 0.95, 0.99, 1.00, 0.99)
-matrix I =   I\ (0.70, 0.75, 0.80, 0.85, 0.89, 0.94, 0.99, 0.99, 1.00)
+* Corr matrix- Anderson matrix 0-24mos at tri-monthly intervals
+matrix I = (1.000, 0.767, 0.619, 0.535, 0.502, 0.488, 0.501, 0.494, 0.453)
+matrix I = I\ (0.767, 1.000, 0.789, 0.697, 0.673, 0.655, 0.657, 0.646, 0.594)
+matrix I = I\ (0.619, 0.789, 1.000, 0.879, 0.857, 0.833, 0.813, 0.793, 0.764)
+matrix I = I\ (0.535, 0.697, 0.879, 1.000, 0.890, 0.869, 0.849, 0.830, 0.806)
+matrix I = I\ (0.502, 0.673, 0.857, 0.890, 1.000, 0.893, 0.875, 0.855, 0.830)
+matrix I = I\ (0.488, 0.655, 0.833, 0.869, 0.893, 1.000, 0.895, 0.877, 0.853)
+matrix I = I\ (0.501, 0.657, 0.813, 0.849, 0.875, 0.895, 1.000, 0.897, 0.875)
+matrix I = I\ (0.494, 0.646, 0.793, 0.830, 0.855, 0.877, 0.897, 1.000, 0.892)
+matrix I = I\ (0.453, 0.594, 0.764, 0.806, 0.830, 0.853, 0.875, 0.892, 1.000)
 * Mean LAZ:
 matrix F1I = (-1.0000, -1.2667, -1.3674, -1.5382, -1.7607, -1.9175, -2.0906, -2.0772, -2.0141)
 * SD:
@@ -78,7 +74,7 @@ display r(N)/10000
 clear all
 set seed 81625
 set obs 10000
-* Corr matrix - perfect
+* Corr matrix - perfect matrix 0-24mos at tri-monthly intervals
 matrix PI =   (1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 matrix PI =   PI\(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 matrix PI =   PI\(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
@@ -109,23 +105,24 @@ drawnorm laz0 laz3 laz6 laz9 laz12 laz15 laz18 laz21 laz24, means(F1I) sds(SDI) 
 clear all
 set seed 81625
 set obs 10000
-* Corr - empirical
-matrix R =  (1.00, 0.79, 0.79, 0.79, 0.78, 0.78, 0.77, 0.77, 0.77, 0.76, 0.76, 0.75, 0.75, 0.75, 0.74, 0.74)
-matrix R =   R\ (0.79, 1.00, 0.81, 0.80, 0.80, 0.79, 0.79, 0.79, 0.78, 0.78, 0.77, 0.77, 0.77, 0.76, 0.76, 0.75)
-matrix R =   R\ (0.79, 0.81, 1.00, 0.82, 0.81, 0.81, 0.81, 0.80, 0.80, 0.79, 0.79, 0.79, 0.78, 0.78, 0.77, 0.77)
-matrix R =   R\ (0.79, 0.80, 0.82, 1.00, 0.83, 0.83, 0.82, 0.82, 0.81, 0.81, 0.81, 0.80, 0.80, 0.79, 0.79, 0.79)
-matrix R =   R\ (0.78, 0.80, 0.81, 0.83, 1.00, 0.84, 0.84, 0.83, 0.83, 0.83, 0.82, 0.82, 0.81, 0.81, 0.81, 0.80)
-matrix R =   R\ (0.78, 0.79, 0.81, 0.83, 0.84, 1.00, 0.85, 0.85, 0.85, 0.84, 0.84, 0.83, 0.83, 0.83, 0.82, 0.82)
-matrix R =   R\ (0.77, 0.79, 0.81, 0.82, 0.84, 0.85, 1.00, 0.87, 0.86, 0.86, 0.85, 0.85, 0.85, 0.84, 0.84, 0.83)
-matrix R =   R\ (0.77, 0.79, 0.80, 0.82, 0.83, 0.85, 0.87, 1.00, 0.88, 0.87, 0.87, 0.87, 0.86, 0.86, 0.85, 0.85)
-matrix R =   R\ (0.77, 0.78, 0.80, 0.81, 0.83, 0.85, 0.86, 0.88, 1.00, 0.89, 0.89, 0.88, 0.88, 0.87, 0.87, 0.87)
-matrix R =   R\ (0.76, 0.78, 0.79, 0.81, 0.83, 0.84, 0.86, 0.87, 0.89, 1.00, 0.90, 0.90, 0.89, 0.89, 0.89, 0.88)
-matrix R =   R\ (0.76, 0.77, 0.79, 0.81, 0.82, 0.84, 0.85, 0.87, 0.89, 0.90, 1.00, 0.91, 0.91, 0.91, 0.90, 0.90)
-matrix R =   R\ (0.75, 0.77, 0.79, 0.80, 0.82, 0.83, 0.85, 0.87, 0.88, 0.90, 0.91, 1.00, 0.93, 0.92, 0.92, 0.91)
-matrix R =   R\ (0.75, 0.77, 0.78, 0.80, 0.81, 0.83, 0.85, 0.86, 0.88, 0.89, 0.91, 0.93, 1.00, 0.94, 0.93, 0.93)
-matrix R =   R\ (0.75, 0.76, 0.78, 0.79, 0.81, 0.83, 0.84, 0.86, 0.87, 0.89, 0.91, 0.92, 0.94, 1.00, 0.95, 0.95)
-matrix R =   R\ (0.74, 0.76, 0.77, 0.79, 0.81, 0.82, 0.84, 0.85, 0.87, 0.89, 0.90, 0.92, 0.93, 0.95, 1.00, 0.96)
-matrix R =   R\ (0.74, 0.75, 0.77, 0.79, 0.80, 0.82, 0.83, 0.85, 0.87, 0.88, 0.90, 0.91, 0.93, 0.95, 0.96, 1.00)
+* Corr - Anderson matrix 0-15mos at monthly intervals
+matrix R = (1.000, 0.876, 0.820, 0.767, 0.716, 0.659, 0.619, 0.584, 0.553, 0.535, 0.522, 0.511, 0.502, 0.494, 0.490, 0.488)
+matrix R =   R\ (0.876, 1.000, 0.857, 0.814, 0.769, 0.713, 0.671, 0.635, 0.602, 0.583, 0.572, 0.561, 0.553, 0.544, 0.539, 0.538)
+matrix R =   R\ (0.820, 0.857, 1.000, 0.866, 0.831, 0.781, 0.740, 0.703, 0.668, 0.650, 0.641, 0.632, 0.623, 0.615, 0.610, 0.607)
+matrix R =   R\ (0.767, 0.814, 0.866, 1.000, 0.867, 0.826, 0.789, 0.752, 0.715, 0.697, 0.688, 0.680, 0.673, 0.664, 0.659, 0.655)
+matrix R =   R\ (0.716, 0.769, 0.831, 0.867, 1.000, 0.865, 0.834, 0.800, 0.765, 0.747, 0.737, 0.729, 0.723, 0.715, 0.709, 0.705)
+matrix R =   R\ (0.659, 0.713, 0.781, 0.826, 0.865, 1.000, 0.871, 0.843, 0.813, 0.795, 0.784, 0.775, 0.768, 0.761, 0.756, 0.751)
+matrix R =   R\ (0.619, 0.671, 0.740, 0.789, 0.834, 0.871, 1.000, 0.898, 0.887, 0.879, 0.872, 0.863, 0.857, 0.848, 0.841, 0.833)
+matrix R =   R\ (0.584, 0.635, 0.703, 0.752, 0.800, 0.843, 0.898, 1.000, 0.899, 0.892, 0.885, 0.876, 0.870, 0.862, 0.855, 0.848)
+matrix R =   R\ (0.553, 0.602, 0.668, 0.715, 0.765, 0.813, 0.887, 0.899, 1.000, 0.902, 0.896, 0.888, 0.881, 0.874, 0.867, 0.860)
+matrix R =   R\ (0.535, 0.583, 0.650, 0.697, 0.747, 0.795, 0.879, 0.892, 0.902, 1.000, 0.903, 0.895, 0.890, 0.882, 0.876, 0.869)
+matrix R =   R\ (0.522, 0.572, 0.641, 0.688, 0.737, 0.784, 0.872, 0.885, 0.896, 0.903, 1.000, 0.903, 0.897, 0.890, 0.884, 0.877)
+matrix R =   R\ (0.511, 0.561, 0.632, 0.680, 0.729, 0.775, 0.863, 0.876, 0.888, 0.895, 0.903, 1.000, 0.905, 0.899, 0.893, 0.886)
+matrix R =   R\ (0.502, 0.553, 0.623, 0.673, 0.723, 0.768, 0.857, 0.870, 0.881, 0.890, 0.897, 0.905, 1.000, 0.904, 0.898, 0.893)
+matrix R =   R\ (0.494, 0.544, 0.615, 0.664, 0.715, 0.761, 0.848, 0.862, 0.874, 0.882, 0.890, 0.899, 0.904, 1.000, 0.904, 0.900)
+matrix R =   R\ (0.490, 0.539, 0.610, 0.659, 0.709, 0.756, 0.841, 0.855, 0.867, 0.876, 0.884, 0.893, 0.898, 0.904, 1.000, 0.905)
+matrix R =   R\ (0.488, 0.538, 0.607, 0.655, 0.705, 0.751, 0.833, 0.848, 0.860, 0.869, 0.877, 0.886, 0.893, 0.900, 0.905, 1.000)
+
 * Mean LAZ
 matrix F1R = (-0.8185, -0.8746, -0.9346, -0.9921, -1.0460, -1.1078, -1.1532, -1.2151, -1.2703, -1.3374, -1.4122	, -1.4880, -1.5654, -1.6343, -1.7017, -1.7549)
 * SD
@@ -187,7 +184,7 @@ display r(N)/10000
 clear all
 set seed 81625
 set obs 10000
-* Corr - perfect
+* Corr - perfect matrix 0-15mos at monthly intervals
 matrix PR =  (1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00)
 matrix PR =   PR\ (1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00)
 matrix PR =   PR\ (1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00)
@@ -224,7 +221,7 @@ drawnorm laz0 laz1 laz2 laz3 laz4 laz5 laz6 laz7 laz8 laz9 laz10 laz11 laz12 laz
 clear all
 set seed 81625
 set obs 10000
-matrix CA = (1, .79 \ .79, 1) // Correlation corresponding to 0-3months
+matrix CA = (1, .77 \ .77, 1) // Anderson corr (0-3mos)
 matrix SDA = (1.1, 1.1) // Constant SD
 
 *** Set varying parameters for the simulated population datasets
@@ -234,21 +231,25 @@ matrix MA2=(0,-0.1)
 matrix MA3=(0,-0.2)
 matrix MA4=(0,-0.3)
 matrix MA5=(0,-0.4)
+
 matrix MA6=(-0.4,-0.4)
 matrix MA7=(-0.4,-0.5)
 matrix MA8=(-0.4,-0.6)
 matrix MA9=(-0.4,-0.7)
 matrix MA10=(-0.4,-0.8)
+
 matrix MA11=(-0.8,-0.8)
 matrix MA12=(-0.8,-0.9)
 matrix MA13=(-0.8,-1)
 matrix MA14=(-0.8,-1.1)
 matrix MA15=(-0.8,-1.2)
+
 matrix MA16=(-1.2,-1.2)
 matrix MA17=(-1.2,-1.3)
 matrix MA18=(-1.2,-1.4)
 matrix MA19=(-1.2,-1.5)
 matrix MA20=(-1.2,-1.6)
+
 matrix MA21=(-1.6,-1.6)
 matrix MA22=(-1.6,-1.7)
 matrix MA23=(-1.6,-1.8)
@@ -256,7 +257,7 @@ matrix MA24=(-1.6,-1.9)
 matrix MA25=(-1.6,-2)
 
 *** Simulate dataset for first variation of starting mean laz and laz shift 
-drawnorm laz0 laz3, means(MA1) sds(SDA) seed(81625) corr(CA)
+drawnorm laz0 laz3, means(MA25) sds(SDA) seed(81625) corr(CA)
 
 *** Calculate 'Incident stunting onset'
 count if laz0 >=-2 & laz3 <-2
@@ -313,41 +314,42 @@ display r(N)/10000
 
 *****************************************
 *****************************************
-// PART 5: Generate LAZ-, stunting-, and growth delay-by-age trajectories for Figures 3 and 4 (3-23mos)
+// PART 5: Generate LAZ-, stunting-, and growth delay-by-age trajectories for Figure 4 (3-23mos)
 
-* Set parameters for simulated dataset used in Figure 3
+* Set parameters for simulated dataset used in Figure 4
 clear all
 set seed 81625
 set obs 10000
 
-matrix M3 = (-0.9921, -1.0460, -1.1078, -1.1532, -1.2151, -1.2703, -1.3374, -1.4122	, -1.4880, -1.5654, -1.6343, -1.7017, -1.7549, -1.8096, -1.8518, -1.8908, -1.9242, -1.9515, -1.9603, -1.9577, -1.9400)
+matrix M4 = (-0.9921, -1.0460, -1.1078, -1.1532, -1.2151, -1.2703, -1.3374, -1.4122	, -1.4880, -1.5654, -1.6343, -1.7017, -1.7549, -1.8096, -1.8518, -1.8908, -1.9242, -1.9515, -1.9603, -1.9577, -1.9400)
 
-matrix SD34 = (1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1)
+matrix SD45 = (1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1)
 
-matrix C34 = (1.00, 0.83, 0.83, 0.82, 0.82, 0.81, 0.81, 0.81, 0.80, 0.80, 0.79, 0.79, 0.79, 0.78, 0.78, 0.77, 0.77, 0.77, 0.76, 0.76, 0.75)
-matrix C34 = C34 \ (0.83, 1.00, 0.84, 0.84, 0.83, 0.83, 0.83, 0.82, 0.82, 0.81, 0.81, 0.81, 0.80, 0.80, 0.79, 0.79, 0.79, 0.78, 0.78, 0.77, 0.77)
-matrix C34 = C34 \ (0.83, 0.84, 1.00, 0.85, 0.85, 0.85, 0.84, 0.84, 0.83, 0.83, 0.83, 0.82, 0.82, 0.81, 0.81, 0.81, 0.80, 0.80, 0.79, 0.79, 0.79)
-matrix C34 = C34 \ (0.82, 0.84, 0.85, 1.00, 0.87, 0.86, 0.86, 0.85, 0.85, 0.85, 0.84, 0.84, 0.83, 0.83, 0.83, 0.82, 0.82, 0.81, 0.81, 0.81, 0.80)
-matrix C34 = C34 \ (0.82, 0.83, 0.85, 0.87, 1.00, 0.88, 0.87, 0.87, 0.87, 0.86, 0.86, 0.85, 0.85, 0.85, 0.84, 0.84, 0.83, 0.83, 0.83, 0.82, 0.82)
-matrix C34 = C34 \ (0.81, 0.83, 0.85, 0.86, 0.88, 1.00, 0.89, 0.89, 0.88, 0.88, 0.87, 0.87, 0.87, 0.86, 0.86, 0.85, 0.85, 0.85, 0.84, 0.84, 0.83)
-matrix C34 = C34 \ (0.81, 0.83, 0.84, 0.86, 0.87, 0.89, 1.00, 0.90, 0.90, 0.89, 0.89, 0.89, 0.88, 0.88, 0.87, 0.87, 0.87, 0.86, 0.86, 0.85, 0.85)
-matrix C34 = C34 \ (0.81, 0.82, 0.84, 0.85, 0.87, 0.89, 0.90, 1.00, 0.91, 0.91, 0.91, 0.90, 0.90, 0.89, 0.89, 0.89, 0.88, 0.88, 0.87, 0.87, 0.87)
-matrix C34 = C34 \ (0.80, 0.82, 0.83, 0.85, 0.87, 0.88, 0.90, 0.91, 1.00, 0.93, 0.92, 0.92, 0.91, 0.91, 0.91, 0.90, 0.90, 0.89, 0.89, 0.89, 0.88)
-matrix C34 = C34 \ (0.80, 0.81, 0.83, 0.85, 0.86, 0.88, 0.89, 0.91, 0.93, 1.00, 0.94, 0.93, 0.93, 0.93, 0.92, 0.92, 0.91, 0.91, 0.91, 0.90, 0.90)
-matrix C34 = C34 \ (0.79, 0.81, 0.83, 0.84, 0.86, 0.87, 0.89, 0.91, 0.92, 0.94, 1.00, 0.95, 0.95, 0.94, 0.94, 0.93, 0.93, 0.93, 0.92, 0.92, 0.91)
-matrix C34 = C34 \ (0.79, 0.81, 0.82, 0.84, 0.85, 0.87, 0.89, 0.90, 0.92, 0.93, 0.95, 1.00, 0.96, 0.96, 0.95, 0.95, 0.95, 0.94, 0.94, 0.93, 0.93)
-matrix C34 = C34 \ (0.79, 0.80, 0.82, 0.83, 0.85, 0.87, 0.88, 0.90, 0.91, 0.93, 0.95, 0.96, 1.00, 0.97, 0.97, 0.97, 0.96, 0.96, 0.95, 0.95, 0.95)
-matrix C34 = C34 \ (0.78, 0.80, 0.81, 0.83, 0.85, 0.86, 0.88, 0.89, 0.91, 0.93, 0.94, 0.96, 0.97, 1.00, 0.99, 0.98, 0.98, 0.97, 0.97, 0.97, 0.96)
-matrix C34 = C34 \ (0.78, 0.79, 0.81, 0.83, 0.84, 0.86, 0.87, 0.89, 0.91, 0.92, 0.94, 0.95, 0.97, 0.99, 1.00, 0.99, 0.99, 0.99, 0.99, 0.98, 0.98)
-matrix C34 = C34 \ (0.77, 0.79, 0.81, 0.82, 0.84, 0.85, 0.87, 0.89, 0.90, 0.92, 0.93, 0.95, 0.97, 0.98, 0.99, 1.00, 0.99, 0.99, 0.99, 0.99, 0.99)
-matrix C34 = C34 \ (0.77, 0.79, 0.80, 0.82, 0.83, 0.85, 0.87, 0.88, 0.90, 0.91, 0.93, 0.95, 0.96, 0.98, 0.99, 0.99, 1.00, 0.99, 0.99, 0.99, 0.99)
-matrix C34 = C34 \ (0.77, 0.78, 0.80, 0.81, 0.83, 0.85, 0.86, 0.88, 0.89, 0.91, 0.93, 0.94, 0.96, 0.97, 0.99, 0.99, 0.99, 1.00, 0.99, 0.99, 0.99)
-matrix C34 = C34 \ (0.76, 0.78, 0.79, 0.81, 0.83, 0.84, 0.86, 0.87, 0.89, 0.91, 0.92, 0.94, 0.95, 0.97, 0.99, 0.99, 0.99, 0.99, 1.00, 0.99, 0.99)
-matrix C34 = C34 \ (0.76, 0.77, 0.79, 0.81, 0.82, 0.84, 0.85, 0.87, 0.89, 0.90, 0.92, 0.93, 0.95, 0.97, 0.98, 0.99, 0.99, 0.99, 0.99, 1.00, 0.99)
-matrix C34 = C34 \ (0.75, 0.77, 0.79, 0.80, 0.82, 0.83, 0.85, 0.87, 0.88, 0.90, 0.91, 0.93, 0.95, 0.96, 0.98, 0.99, 0.99, 0.99, 0.99, 0.99, 1.00)
+matrix C45 = (1.000, 0.867, 0.826, 0.789, 0.752, 0.715, 0.697, 0.688, 0.680, 0.673, 0.664, 0.659, 0.655, 0.654, 0.654, 0.657, 0.655, 0.652, 0.646, 0.634, 0.617)
+matrix C45 = C45 \ (0.867, 1.000, 0.865, 0.834, 0.800, 0.765, 0.747, 0.737, 0.729, 0.723, 0.715, 0.709, 0.705, 0.701, 0.699, 0.700, 0.696, 0.692, 0.686, 0.673, 0.655)
+matrix C45 = C45 \ (0.826, 0.865, 1.000, 0.871, 0.843, 0.813, 0.795, 0.784, 0.775, 0.768, 0.761, 0.756, 0.751, 0.745, 0.739, 0.738, 0.733, 0.728, 0.721, 0.708, 0.690)
+matrix C45 = C45 \ (0.789, 0.834, 0.871, 1.000, 0.898, 0.887, 0.879, 0.872, 0.863, 0.857, 0.848, 0.841, 0.833, 0.825, 0.817, 0.813, 0.805, 0.799, 0.793, 0.784, 0.775)
+matrix C45 = C45 \ (0.752, 0.800, 0.843, 0.898, 1.000, 0.899, 0.892, 0.885, 0.876, 0.870, 0.862, 0.855, 0.848, 0.839, 0.832, 0.828, 0.820, 0.814, 0.808, 0.799, 0.792)
+matrix C45 = C45 \ (0.715, 0.765, 0.813, 0.887, 0.899, 1.000, 0.902, 0.896, 0.888, 0.881, 0.874, 0.867, 0.860, 0.851, 0.844, 0.840, 0.832, 0.827, 0.821, 0.812, 0.806)
+matrix C45 = C45 \ (0.697, 0.747, 0.795, 0.879, 0.892, 0.902, 1.000, 0.903, 0.895, 0.890, 0.882, 0.876, 0.869, 0.860, 0.853, 0.849, 0.841, 0.835, 0.830, 0.821, 0.815)
+matrix C45 = C45 \ (0.688, 0.737, 0.784, 0.872, 0.885, 0.896, 0.903, 1.000, 0.903, 0.897, 0.890, 0.884, 0.877, 0.869, 0.862, 0.857, 0.850, 0.844, 0.838, 0.830, 0.824)
+matrix C45 = C45 \ (0.680, 0.729, 0.775, 0.863, 0.876, 0.888, 0.895, 0.903, 1.000, 0.905, 0.899, 0.893, 0.886, 0.879, 0.872, 0.867, 0.860, 0.854, 0.848, 0.839, 0.833)
+matrix C45 = C45 \ (0.673, 0.723, 0.768, 0.857, 0.870, 0.881, 0.890, 0.897, 0.905, 1.000, 0.904, 0.898, 0.893, 0.886, 0.880, 0.875, 0.867, 0.861, 0.855, 0.846, 0.840)
+matrix C45 = C45 \ (0.664, 0.715, 0.761, 0.848, 0.862, 0.874, 0.882, 0.890, 0.899, 0.904, 1.000, 0.904, 0.900, 0.894, 0.888, 0.883, 0.876, 0.870, 0.864, 0.855, 0.848)
+matrix C45 = C45 \ (0.659, 0.709, 0.756, 0.841, 0.855, 0.867, 0.876, 0.884, 0.893, 0.898, 0.904, 1.000, 0.905, 0.900, 0.894, 0.889, 0.882, 0.877, 0.871, 0.862, 0.855)
+matrix C45 = C45 \ (0.655, 0.705, 0.751, 0.833, 0.848, 0.860, 0.869, 0.877, 0.886, 0.893, 0.900, 0.905, 1.000, 0.904, 0.898, 0.895, 0.888, 0.883, 0.877, 0.869, 0.862)
+matrix C45 = C45 \ (0.654, 0.701, 0.745, 0.825, 0.839, 0.851, 0.860, 0.869, 0.879, 0.886, 0.894, 0.900, 0.904, 1.000, 0.904, 0.900, 0.895, 0.891, 0.886, 0.878, 0.871)
+matrix C45 = C45 \ (0.654, 0.699, 0.739, 0.817, 0.832, 0.844, 0.853, 0.862, 0.872, 0.880, 0.888, 0.894, 0.898, 0.904, 1.000, 0.905, 0.900, 0.896, 0.892, 0.884, 0.878)
+matrix C45 = C45 \ (0.657, 0.700, 0.738, 0.813, 0.828, 0.840, 0.849, 0.857, 0.867, 0.875, 0.883, 0.889, 0.895, 0.900, 0.905, 1.000, 0.905, 0.901, 0.897, 0.890, 0.884)
+matrix C45 = C45 \ (0.655, 0.696, 0.733, 0.805, 0.820, 0.832, 0.841, 0.850, 0.860, 0.867, 0.876, 0.882, 0.888, 0.895, 0.900, 0.905, 1.000, 0.906, 0.902, 0.896, 0.890)
+matrix C45 = C45 \ (0.652, 0.692, 0.728, 0.799, 0.814, 0.827, 0.835, 0.844, 0.854, 0.861, 0.870, 0.877, 0.883, 0.891, 0.896, 0.901, 0.906, 1.000, 0.905, 0.900, 0.894)
+matrix C45 = C45 \ (0.646, 0.686, 0.721, 0.793, 0.808, 0.821, 0.830, 0.838, 0.848, 0.855, 0.864, 0.871, 0.877, 0.886, 0.892, 0.897, 0.902, 0.905, 1.000, 0.903, 0.898)
+matrix C45 = C45 \ (0.634, 0.673, 0.708, 0.784, 0.799, 0.812, 0.821, 0.830, 0.839, 0.846, 0.855, 0.862, 0.869, 0.878, 0.884, 0.890, 0.896, 0.900, 0.903, 1.000, 0.903)
+matrix C45 = C45 \ (0.617, 0.655, 0.690, 0.775, 0.792, 0.806, 0.815, 0.824, 0.833, 0.840, 0.848, 0.855, 0.862, 0.871, 0.878, 0.884, 0.890, 0.894, 0.898, 0.903, 1.000)
 
-* Simulate dataset used in Figure 3
-drawnorm laz3 laz4 laz5 laz6 laz7 laz8 laz9 laz10 laz11 laz12 laz13 laz14 laz15 laz16 laz17 laz18 laz19 laz20 laz21 laz22 laz23, means(M3) sds(SD34) corr(C34) forcepsd
+
+* Simulate dataset used in Figure 4
+drawnorm laz3 laz4 laz5 laz6 laz7 laz8 laz9 laz10 laz11 laz12 laz13 laz14 laz15 laz16 laz17 laz18 laz19 laz20 laz21 laz22 laz23, means(M4) sds(SD45) corr(C45) forcepsd
 
 gen age_mos=_n // this does not correspond to the existing variables in the dataset; it's used to document the following calculations:
 
@@ -575,7 +577,7 @@ keep age_mos m_laz age_days stunt_prop
 gen row_count=_n
 gen HA_days=.
 gen GD=.
-save "growth_delay1.dta", replace
+save "growth_delay.dta", replace
 
 *** Download "lenanthro.dta" dataset from https://github.com/unicef-drp/igrowup_update
 * Save dataset to working directory
@@ -588,7 +590,7 @@ save "lenanthro_collapsed.dta", replace
 *** Calculate height-age and growth delay from mean laz per month
 clear
 forvalues counter = 1 (1) 21 {
-use "growth_delay1.dta", clear 
+use "growth_delay.dta", clear 
 	gen merger = 1
 	keep if row_count==`counter'
 	joinby merger using "lenanthro_collapsed.dta"
@@ -603,42 +605,28 @@ use "growth_delay1.dta", clear
 	gen GD = (age_days-HA_days)
 	drop if _n != 1
 	keep row_count HA_days GD
-	merge 1:1 row_count using "growth_delay1.dta" 
+	merge 1:1 row_count using "growth_delay.dta" 
 	drop _merge
-	save "growth_delay1.dta", replace 
+	save "growth_delay.dta", replace 
 	clear
 }
 
-use "growth_delay1.dta"
+use "growth_delay.dta"
 sort row_count
 save, replace
 
 *****************************************
 
-*** REPEAT steps above but to show an increasing LAZ trajectory (for Figure 4) 
-* Repeat everything above EXCEPT:
-* Simulate new dataset w/ new mean matrix below (M4)
-* Make sure to re-name file with data to calculate growth delay (e.g., "growthdelay2.dta")
-* Do not need to re-run lines to collapse lenanthro file (can re-use already collapsed file)
-
-matrix M4 = (-1.20, -1.25, -1.30, -1.35, -1.40, -1.45, -1.50, -1.55, -1.60, -1.65, -1.70, -1.75, -1.80, -1.85, -1.80, -1.75, -1.70, -1.65, -1.60, -1.55, -1.50)
-
-* Simulate dataset used in Figure 4
-drawnorm laz3 laz4 laz5 laz6 laz7 laz8 laz9 laz10 laz11 laz12 laz13 laz14 laz15 laz16 laz17 laz18 laz19 laz20 laz21 laz22 laz23, means(M4) sds(SD34) corr(C34) forcepsd
-
-* Repeat steps from gen age_mos=_n (with the exceptions stated above in mind)
-
-
 
 *****************************************
 *****************************************
-// PART 6: Generate simulated dataset w/ missingness and calculate indicators - Extended Data Table 2
+// PART 6: Generate simulated dataset w/ missingness and calculate incidence - Table 1
 
 *** Set parameters for simulated population dataset
 clear all
 set seed 81625
 set obs 10000
-matrix CE = (1, .79 \ .79, 1) // Correlation corresponding to 0-3months
+matrix CE = (1, .77 \ .77, 1) // Correlation corresponding to 0-3months
 matrix SDE = (1.1, 1.1) // Constant SD
 matrix ME = (-1.0000, -1.2667)
 
@@ -655,9 +643,9 @@ replace laz0 =. if tag==1
 count if laz0<-2 // # classified as 'stunted' at birth = 1648
 display 1648/9000 // manual calculation of stunting prev. (# stunted/total N)
 * Determine incident stunting onset between 0-3 mos
-count if laz0>=-2 & laz3<-2 & tag==0 // normal calculation of 'newly stunted' = 1036
-count if laz3<-2 & tag==1 // Infants with missing birth measurements were considered `newly stunted' if their 3-month LAZ <-2 = 247
-display (1036+247)/10000 // (full sample size now as denominator as now missingness at 3-months)
+count if laz0>=-2 & laz3<-2 & tag==0 // normal calculation of 'newly stunted' = 1069
+count if laz3<-2 & tag==1 // Infants with missing birth measurements were considered `newly stunted' if their 3-month LAZ <-2 = 250
+display (1069+250)/10000 // (full sample size now as denominator as now missingness at 3-months)
 
 
 *** 20% missingness
@@ -668,28 +656,13 @@ replace laz0 =. if tag==1
 count if laz0<-2 // # classified as 'stunted' at birth = 1467
 display 1467/8000 // manual calculation of stunting prev. (# stunted/total N)
 * Determine incident stunting onset between 0-3 mos
-count if laz0>=-2 & laz3<-2 & tag==0 // normal calculation of 'newly stunted' =  927
-count if laz3<-2 & tag==1 // Infants with missing birth measurements were considered `newly stunted' if their 3-month LAZ <-2 = 247
-display (927+491)/10000 // (full sample size now as denominator as now missingness at 3-months)
+count if laz0>=-2 & laz3<-2 & tag==0 // normal calculation of 'newly stunted' =  959
+count if laz3<-2 & tag==1 // Infants with missing birth measurements were considered `newly stunted' if their 3-month LAZ <-2 = 492
+display (959+492)/10000 // (full sample size now as denominator as now missingness at 3-months)
 
-
-*** 25% missingness
-* Rerun lines up to (and including) drawnorm
-gen byte tag = mod(_n, 4) == 0
-replace laz0 =. if tag==1
-* Determine stunting prevalence at birth
-count if laz0<-2 // # classified as 'stunted' at birth = 1394
-display 1394/7500 // manual calculation of stunting prev. (# stunted/total N)
-* Determine incident stunting onset between 0-3 mos
-count if laz0>=-2 & laz3<-2 & tag==0 // normal calculation of 'newly stunted' =  927
-count if laz3<-2 & tag==1 // Infants with missing birth measurements were considered `newly stunted' if their 3-month LAZ <-2 = 247
-display (873+599)/10000 // (full sample size now as denominator as now missingness at 3-months)
 
 *****************************************
 *****************************************
-
-
-
 
 
 
