@@ -1,6 +1,6 @@
-Linear Growth Faltering in LMICs – Simulations and Figures
+## Linear Growth Faltering in LMICs – Simulations and Figures (Pre-Print version)
 
-Authors: 	Daniel E. Roth, Kelly M. Watson & Diego G. Bassani
+### Authors: 	Daniel E. Roth, Kelly M. Watson & Diego G. Bassani
 
 These are code and data files related to simulations designed and implemented as a response to ["Early-childhood linear growth faltering in low- and middle-income countries"](https://doi.org/10.1038/s41586-023-06418-5) by Benjamin-Chung and HBGDki collaborators (Nature 2023; 621, 550–557), as presented in a preprint manuscript entitled [“Whole-population perspective is needed for analyses and actions to address linear growth faltering in low- and middle-income countries”](https://doi.org/10.1101/2024.06.24.24309409).  
 
