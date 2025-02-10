@@ -183,7 +183,7 @@ matrix PI =   PI\(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
 set seed 81625
 drawnorm p_laz0 p_laz3 p_laz6 p_laz9 p_laz12 p_laz15 p_laz18 p_laz21 p_laz24, means(F1I) sds(SDI) corr(PI) 
 
-* Generate counts and percentages for incident stunting onset in each interval (imperfect correlation)
+* Generate counts and percentages for incident stunting onset in each interval (perfect correlation)
 
 *At birth
 count if p_laz0<-2
